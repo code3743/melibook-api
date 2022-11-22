@@ -4,7 +4,9 @@ Permite buscar libros y sincronizar la lista de deseos de un usuario
 
 
 ## endpoints
-- api/?buscar=NOMBRE_DEL_LIBRO  *get* paramteros query *buscar*
+- api/?buscar=**NOMBRE_DEL_LIBRO**
+
+  *get* paramteros query *buscar*
 
 ***Respuesta json***
 ```
@@ -27,7 +29,9 @@ Permite buscar libros y sincronizar la lista de deseos de un usuario
 }
 ```
 
-- api/  *post* parametros body user:CORREO pass:CONTRASEÑA
+- api/  *post*
+
+parametros body **user:CORREO pass:CONTRASEÑA**
 
 ***Respuesta json***
 ```
@@ -55,7 +59,9 @@ Permite buscar libros y sincronizar la lista de deseos de un usuario
     
 }
 ```
-- api/detalle?id=ID_LIBRO  *get* paramteros query *id*
+- api/detalle?id=**ID_LIBRO**  
+
+*get* paramteros query *id*
 
 ***Respuesta json***
 ```

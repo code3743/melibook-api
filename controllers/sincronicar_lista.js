@@ -60,7 +60,6 @@ const sincronizarLista = async (req = request, res = response)=>{
             await page.evaluate((i)=>{
                 document.querySelectorAll('.ul-wishlist>li')[i].querySelector('a').click();
                 }, i);
-                console.log('Antes de todo')
             await page.waitForTimeout(500);
             const ejemplares = await page.evaluate(()=>{
                 try {
@@ -74,10 +73,11 @@ const sincronizarLista = async (req = request, res = response)=>{
                 }
                 const libros = [];
                 document.querySelectorAll('.productosLista>div>a').forEach((libro)=>{
+
                     const imagen = libro.querySelector('.img-div>img').src;
-                    const nombre = libro.querySelector('.title').innerText;
-                    const autor = libro.querySelector('.field ').innerText;
-                    const editorial = libro.querySelector('.autor').innerText;
+                    const nombre = libro.querySelector('.title') ? libro.querySelector('.title').innerText : '';
+                    const autor =  libro.querySelector('.field.autor')? libro.querySelector('.field ').innerText : '';
+                    const editorial = libro.querySelector('.autor.color-dark-gray') ? libro.querySelector('.autor.color-dark-gray').innerText : '';
                     const precio_actual = libro.querySelector('.precioAhora') ? evaluarPrecio(libro.querySelector('.precioAhora').innerText.split('$ ')[1]) : 0;
                     const precio_antes = libro.querySelector('.precioAntes') ? evaluarPrecio(libro.querySelector('.precioAntes').innerText.split('$ ')[1]) : 0;
                     const descuento =  libro.querySelector('.descuento-percent>strong') ?  parseInt(libro.querySelector('.descuento-percent>strong').innerText.replace('%','')) : 0;

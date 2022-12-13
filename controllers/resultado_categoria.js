@@ -1,25 +1,14 @@
-
 const { chromium  } = require('playwright-chromium');
 const {request, response } = require('express');
 
 
-const buscarEjemplar = async (req = request, res = response)=>{
-    const parametroBusqueda = req.query.buscar;
+const resultadosPorCategoria = async (req = request, res = response)=>{
+    const idCategoria = 'libros/' + req.params.id ;
     try {
         const navegador = await chromium.launch({ chromiumSandbox: false});
         const page = await navegador.newPage();
-        await page.goto(process.env.BASE_URL+'libros/search?q='+parametroBusqueda);
+        await page.goto(process.env.BASE_URL + idCategoria);
         await page.waitForLoadState();
-        if(await page.$('#noEncontrado')){
-            await navegador.close();
-            res.json({
-                busqueda: parametroBusqueda,
-                resultados: []
-            });
-            return;
-        }
-        await page.waitForSelector('.productos');
-       
         const resultados =  await page.evaluate(()=>{
             const resultados = document.querySelectorAll('.productos>.box-producto>a') ?? [];
             const ejemplares = [];
@@ -38,26 +27,17 @@ const buscarEjemplar = async (req = request, res = response)=>{
             });
             return ejemplares;
         });
-
-
-        await navegador.close();
-   
         res.json({
-            busqueda: parametroBusqueda,
             resultados
-        });
-
+        })
     } catch (error) {
         console.log(error)
-       res.status(500).json({
+        res.status(500).json({
             mensaje: 'Algo salio mal',
-            error
+            ...error
         }
         );
     }
-};
+}
 
-
-
-module.exports = buscarEjemplar;
-
+module.exports =  resultadosPorCategoria;
